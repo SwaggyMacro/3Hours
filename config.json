@@ -1,4 +1,7 @@
 {
-  "token": "API Token 授权",
+  "token": "填写你自己的key",
+  "use_openai": true,
+  "http_proxy": "http://127.0.0.1:10801",
+  "https_proxy": "http://127.0.0.1:10801",
   "author": "SwaggyMacro"
 }

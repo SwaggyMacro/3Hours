@@ -4,16 +4,11 @@ import time
 
 import openai
 import requests as req
-import json
 from config import *
+from Utils.Other import get_config
 
 
-def get_config() -> dict:
-    with open('config.json', 'r', encoding='utf-8') as f:
-        return json.loads(f.read())
-
-
-TOKEN = get_config()['token']
+TOKEN = get_config('token')
 
 HEADERS = {
     'content-type': 'application/json;charset=UTF-8',

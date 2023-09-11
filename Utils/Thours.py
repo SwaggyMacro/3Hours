@@ -30,10 +30,12 @@ class Thours:
         self.Headers['csr-uuid'] = uuid
 
     def get_question_list(self):
-        type_id_ret = req.get('https://m.3hours.taobao.com/ewrite/type?channelCode=', headers=self.Headers, verify=VERIFY_SSL).json()
+        type_id_ret = req.get('https://m.3hours.taobao.com/ewrite/type?channelCode=',
+                              headers=self.Headers, verify=VERIFY_SSL).json()
         question_list = []
         for q_type in type_id_ret['data']:
-            question_ret = req.get(f'https://m.3hours.taobao.com/ewrite/exclusiveLetter?typeId={q_type["typeId"]}'
+            question_ret = req.get(f'https://m.3hours.taobao.com/ewrite/exclusiveLetter?'
+                                   f'typeId={q_type["typeId"]}'
                                    f'&pageIndex=1'
                                    f'&pageSize=20',
                                    headers=self.Headers, verify=VERIFY_SSL).json()
@@ -41,7 +43,8 @@ class Thours:
                 question_list.append(question)
             pages = question_ret['data']['pages']
             for page in range(2, pages + 1):
-                question_ret = req.get(f'https://m.3hours.taobao.com/ewrite/exclusiveLetter?typeId={q_type["typeId"]}'
+                question_ret = req.get(f'https://m.3hours.taobao.com/ewrite/exclusiveLetter?'
+                                       f'typeId={q_type["typeId"]}'
                                        f'&pageIndex={page}'
                                        f'&pageSize=20',
                                        headers=self.Headers, verify=VERIFY_SSL).json()
@@ -74,11 +77,11 @@ class Thours:
     def process_topic(self, topic_id: int, activity_id: int, page_id: int):
         return req.post('https://ef.3hours.taobao.com/eknow/user/processUserAnswer',
                         headers=self.Headers, verify=VERIFY_SSL, data=json.dumps({
-                'topicId': topic_id,
-                'activityId': activity_id,
-                'pageId': page_id,
-                'totalSeconds': random.randint(40, 60)
-            })).json()
+                            'topicId': topic_id,
+                            'activityId': activity_id,
+                            'pageId': page_id,
+                            'totalSeconds': random.randint(40, 60)
+                        })).json()
 
     def save_topic_answer(self, topic_id: str | int, activity_id: str | int, page_id: str | int, option_id: str,
                           question_id: int) -> dict:
@@ -117,7 +120,8 @@ class Thours:
             'donateSteps': random.randint(10000, 20000),
             'scene': 'loveBean',
         }
-        return req.post('https://m.3hours.taobao.com/donateStep/dailyDonate', headers=self.Headers, verify=VERIFY_SSL, data=data).json()
+        return req.post('https://m.3hours.taobao.com/donateStep/dailyDonate', headers=self.Headers,
+                        verify=VERIFY_SSL, data=data).json()
 
     def get_today_charity_history_list(self):
         # 本地获取今年是多少年

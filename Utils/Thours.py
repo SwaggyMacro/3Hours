@@ -4,6 +4,8 @@ import random
 import requests as req
 import json
 
+from config import *
+
 
 class Thours:
     Headers = {
@@ -28,13 +30,13 @@ class Thours:
         self.Headers['csr-uuid'] = uuid
 
     def get_question_list(self):
-        type_id_ret = req.get('https://m.3hours.taobao.com/ewrite/type?channelCode=', headers=self.Headers).json()
+        type_id_ret = req.get('https://m.3hours.taobao.com/ewrite/type?channelCode=', headers=self.Headers, verify=VERIFY_SSL).json()
         question_list = []
         for q_type in type_id_ret['data']:
             question_ret = req.get(f'https://m.3hours.taobao.com/ewrite/exclusiveLetter?typeId={q_type["typeId"]}'
                                    f'&pageIndex=1'
                                    f'&pageSize=20',
-                                   headers=self.Headers).json()
+                                   headers=self.Headers, verify=VERIFY_SSL).json()
             for question in question_ret['data']['list']:
                 question_list.append(question)
             pages = question_ret['data']['pages']
@@ -42,18 +44,18 @@ class Thours:
                 question_ret = req.get(f'https://m.3hours.taobao.com/ewrite/exclusiveLetter?typeId={q_type["typeId"]}'
                                        f'&pageIndex={page}'
                                        f'&pageSize=20',
-                                       headers=self.Headers).json()
+                                       headers=self.Headers, verify=VERIFY_SSL).json()
                 for question in question_ret['data']['list']:
                     question_list.append(question)
         return question_list
 
     def get_question_detail(self, question_id: str) -> dict:
         return req.get(f'https://m.3hours.taobao.com/ewrite/questionDetail?id={question_id}',
-                       headers=self.Headers).json()
+                       headers=self.Headers, verify=VERIFY_SSL).json()
 
     def answer_question(self, question_id: str, answer: str) -> dict:
         return req.post('https://m.3hours.taobao.com/ewrite/reply',
-                        headers=self.Headers,
+                        headers=self.Headers, verify=VERIFY_SSL,
                         data=json.dumps({
                             'id': question_id,
                             'replyContent': answer,
@@ -62,26 +64,26 @@ class Thours:
 
     def get_topic_list(self):
         return req.get('https://ef.3hours.taobao.com/eknow/activity/getFirstPage?activityId=1&from=3hours',
-                       headers=self.Headers).json()
+                       headers=self.Headers, verify=VERIFY_SSL).json()
 
     def get_topic_detail(self, topic_id: str, activity_id: str) -> dict:
         return req.get(f'https://ef.3hours.taobao.com/eknow/activity/getQuestionPage?'
                        f'topicId={topic_id}&activityId={activity_id}',
-                       headers=self.Headers).json()
+                       headers=self.Headers, verify=VERIFY_SSL).json()
 
     def process_topic(self, topic_id: int, activity_id: int, page_id: int):
         return req.post('https://ef.3hours.taobao.com/eknow/user/processUserAnswer',
-                        headers=self.Headers, data=json.dumps({
-                                                        'topicId': topic_id,
-                                                        'activityId': activity_id,
-                                                        'pageId': page_id,
-                                                        'totalSeconds': random.randint(40, 60)
-                                                    })).json()
+                        headers=self.Headers, verify=VERIFY_SSL, data=json.dumps({
+                'topicId': topic_id,
+                'activityId': activity_id,
+                'pageId': page_id,
+                'totalSeconds': random.randint(40, 60)
+            })).json()
 
     def save_topic_answer(self, topic_id: str | int, activity_id: str | int, page_id: str | int, option_id: str,
                           question_id: int) -> dict:
         return req.post('https://ef.3hours.taobao.com/eknow/user/saveUserAnswer?threehours-from-channel=',
-                        headers=self.Headers,
+                        headers=self.Headers, verify=VERIFY_SSL,
                         data=json.dumps({
                             'activityId': activity_id,
                             'topicId': topic_id,
@@ -92,16 +94,16 @@ class Thours:
 
     def get_book_donate_project(self):
         return req.get('https://m.3hours.taobao.com/donateRead/project/list?openBizCode=e_read_95_27&limit=1',
-                       headers=self.Headers).json()
+                       headers=self.Headers, verify=VERIFY_SSL).json()
 
     def get_book_list(self):
         return req.get('https://m.3hours.taobao.com/read/teamBook?pageSize=20&pageIndex=1&teamId=1708',
-                       headers=self.Headers).json()
+                       headers=self.Headers, verify=VERIFY_SSL).json()
 
     def read_donate(self, project_id: int | str, book_id: int | str, team_id: int | str,
                     voice_time: int | str, audio_link: str):
         return req.post('https://m.3hours.taobao.com/read/donate',
-                        headers=self.Headers,
+                        headers=self.Headers, verify=VERIFY_SSL,
                         data=json.dumps({
                             'projectId': project_id,
                             'bookId': book_id,
@@ -115,7 +117,7 @@ class Thours:
             'donateSteps': random.randint(10000, 20000),
             'scene': 'loveBean',
         }
-        return req.post('https://m.3hours.taobao.com/donateStep/dailyDonate', headers=self.Headers, data=data).json()
+        return req.post('https://m.3hours.taobao.com/donateStep/dailyDonate', headers=self.Headers, verify=VERIFY_SSL, data=data).json()
 
     def get_today_charity_history_list(self):
         # 本地获取今年是多少年
@@ -130,7 +132,7 @@ class Thours:
         while charity_date == today:
             ret = req.get(f'https://m.3hours.taobao.com/charityAccount/getUserCharityActionList?'
                           f'pageIndex={page_index}&pageSize=10&charityAcType=BENEFIT_UP&searchYear={now}',
-                          headers=self.Headers).json()
+                          headers=self.Headers, verify=VERIFY_SSL).json()
             if len(ret['data']['list']) == 0:
                 break
             for index, charity in enumerate(ret['data']['list']):

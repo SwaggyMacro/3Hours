@@ -160,11 +160,10 @@ def main():
     #         question_func(hours)
     #     else:
     #         exit(0)
-
     print('\n获取用户信息成功，开始执行益起写问答任务\n')
 
     history_list, write, read, topic = hours.get_today_charity_history_list()
-
+    print(f"今日需要执行的任务：\n益起写：{WRITE_LIMIT_PER_DAY - write}次\n益起读：{READ_LIMIT_PER_DAY - read}次\n益起猜：{TOPIC_LIMIT_PER_DAY - topic}次\n")
     try:
         if write >= WRITE_LIMIT_PER_DAY:
             print('今日益起写已完成答题，跳过答题，直接结束任务。\n')

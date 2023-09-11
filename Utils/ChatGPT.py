@@ -2,7 +2,7 @@ import sys
 
 import requests as req
 import json
-
+from config import *
 
 def get_config() -> dict:
     with open('config.json', 'r', encoding='utf-8') as f:
@@ -34,7 +34,7 @@ def get_api_reply(question: str) -> str:
     DATA['prompt'] = question
 
     ret = req.post('https://chat.ncii.cn/api/v2/chat/completions', headers=HEADERS, data=json.dumps(DATA).encode('utf-8'),
-                   stream=True)
+                   stream=True, verify=VERIFY_SSL)
     print("AI答复：")
     for content in ret.iter_lines():
         if content == '':

@@ -137,7 +137,7 @@ class Thours:
             ret = req.get(f'https://m.3hours.taobao.com/charityAccount/getUserCharityActionList?'
                           f'pageIndex={page_index}&pageSize=10&charityAcType=BENEFIT_UP&searchYear={now}',
                           headers=self.Headers, verify=VERIFY_SSL).json()
-            if len(ret['data']['list']) == 0:
+            if 'data' not in ret or len(ret['data']['list']) == 0:
                 break
             for index, charity in enumerate(ret['data']['list']):
                 charity_date = datetime.datetime.fromtimestamp(charity['approveDate'] / 1000).date()

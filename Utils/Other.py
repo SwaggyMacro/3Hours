@@ -8,6 +8,6 @@ def random_replace_star(string: str) -> str:
     return string
 
 
-def get_config(key: str) -> str:
+def get_config(key: str):
     with open('config.json', 'r', encoding='utf-8') as f:
         return json.loads(f.read())[key]

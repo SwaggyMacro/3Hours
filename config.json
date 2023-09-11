@@ -1,6 +1,7 @@
 {
-  "token": "填写你自己的key",
-  "use_openai": true,
+  "token": "填写OpenAI官方的API key或使用作者提供的token",
+  "use_openai": false,
+  "proxy": false,
   "http_proxy": "http://127.0.0.1:10801",
   "https_proxy": "http://127.0.0.1:10801",
   "author": "SwaggyMacro"

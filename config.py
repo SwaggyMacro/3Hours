@@ -8,8 +8,9 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 VERIFY_SSL = False
 USE_OPENAI_API = get_config('use_openai')
+PROXY = get_config('proxy')
 
-if USE_OPENAI_API:
+if USE_OPENAI_API and PROXY:
     # set proxy for openai API
     os.environ["HTTP_PROXY"] = get_config('http_proxy')
     os.environ["HTTPS_PROXY"] = get_config('https_proxy')

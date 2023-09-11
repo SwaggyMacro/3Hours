@@ -7,7 +7,16 @@
 - `use_openai` 字段为true则使用OpenAI官方接口，你需要在token字段中填写你在OpenAI官方申请的API Key。
 - `proxy` 如果你使用OpenAI官方接口的话，则需要填写为true，若网络环境可以访问OpenAI或使用全局代理请填写为false。
 - `http_proxy`和 `https_proxy` 如果你设置`proxy`字段为true，则需要填写http_proxy以及https_proxy字段，以此为访问OpenAI接口设置代理，若你的网络环境或使用全局代理可设置`proxy`字段为false。  
-
+```json
+{
+  "token": "填写OpenAI官方的API key或使用作者提供的token", // 用于对ChatGPT API的请求认证
+  "use_openai": false, // 为true则使用OpenAI官方接口，false则使用仓库作者提供的接口
+  "proxy": false, // 为true则需要设置http_proxy以及https_proxy字段
+  "http_proxy": "http://127.0.0.1:10801", 
+  "https_proxy": "http://127.0.0.1:10801",
+  "author": "SwaggyMacro"
+}
+```
 `如果你使用作者提供的token的话请填写use_openai为false，其他字段则不需要填写。`  
 你也可以每次`益起写`都提交完全一样的内容，只需要将`main.py`中24-36行代码修改为以下内容即可。
 ```python

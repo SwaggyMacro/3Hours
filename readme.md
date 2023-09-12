@@ -48,6 +48,10 @@
 ```shell
 pip install -r requirements.txt
 ```
+### 🌱常见问题
+***
+![({}ZDO6YOL~$N$}4YF8A2OO](https://github.com/SwaggyMacro/3Hours/assets/38845682/9d880799-7a34-4e5c-8eae-5cad88ca9e35)
+![~R75OIBBV(T 5B@2Y1W}}N9](https://github.com/SwaggyMacro/3Hours/assets/38845682/5561fd70-8b01-49ec-8dcd-11831a664e4d)
 
 ### 🎞使用截图
 ***

@@ -100,8 +100,26 @@ class Thours:
                        headers=self.Headers, verify=VERIFY_SSL).json()
 
     def get_book_list(self):
-        return req.get('https://m.3hours.taobao.com/read/teamBook?pageSize=20&pageIndex=1&teamId=1708',
-                       headers=self.Headers, verify=VERIFY_SSL).json()
+        # return req.get('https://m.3hours.taobao.com/read/teamBook?pageSize=20&pageIndex=1&teamId=1708',
+        #               headers=self.Headers, verify=VERIFY_SSL).json()
+        book_list = []
+        total = 0
+        page_size = 20
+        page_index = 1
+        while True:
+            ret = req.get(f'https://m.3hours.taobao.com/read/get_subject_text?'
+                          f'threehours-from-channel=&pageSize={page_size}&pageIndex={page_index}',
+                          headers=self.Headers, verify=VERIFY_SSL).json()
+            if 'data' not in ret or len(ret['data']['list']) == 0:
+                break
+            for index, book in enumerate(ret['data']['list']):
+                # print(book)
+                book_list.append(book)
+                total += 1
+            page_index += 1
+            if total >= ret['data']['total']:
+                break
+        return book_list
 
     def read_donate(self, project_id: int | str, book_id: int | str, team_id: int | str,
                     voice_time: int | str, audio_link: str):

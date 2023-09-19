@@ -106,15 +106,16 @@ def read_book_func(hours: Thours, read_times: int = 0):
     project = hours.get_book_donate_project()
     project_id = project['data'][0]['id']
     project_title = project['data'][0]['extResources']['title']
-    audio_link = "https://piccommon.oss-cn-beijing.aliyuncs.com/e_read/voice/" + \
-                 str(''.join(random.sample(string.ascii_letters + string.digits, 8))).lower() + ".mp4"  # random link
 
     print(f"\n助力项目: {project_title}\n")
     print(f"\n开始朗读书籍\n\n")
-    for index, book in enumerate(book_list['data']['list']):
+    for index, book in enumerate(book_list):
         if read_times >= READ_LIMIT_PER_DAY or index >= READ_LIMIT_PER_DAY:
             print(f"\n今日朗读已捐声5次，跳过朗读。\n\n益起读任务执行完毕\n")
             break
+        audio_link = "https://piccommon.oss-cn-beijing.aliyuncs.com/e_read/voice/" + \
+                     str(''.join(
+                         random.sample(string.ascii_letters + string.digits, 8))).lower() + ".mp4"  # random link
         print(f"正在朗读第 {index + 1} 本书: \n书籍名称: {book['title']}\n书籍作者：{book['author']}\n"
               f"数量：{book['subTitle']}\n书籍内容：{book['content']}\n最短时间：{book['minTime']}\n")
         ret = hours.read_donate(project_id, book['bookId'], team_id, book['minTime'] + 10, audio_link)
@@ -122,6 +123,8 @@ def read_book_func(hours: Thours, read_times: int = 0):
             print(f"\n朗读成功\n")
         else:
             print(f"\n朗读失败，错误信息: {ret}\n")
+            if ret['code'] == 201:
+                continue # 朗读失败，跳过本次朗读
         print('----------------------------------')
         read_times += 1
     print('----------------------------------')

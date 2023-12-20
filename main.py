@@ -119,12 +119,12 @@ def read_book_func(hours: Thours, read_times: int = 0):
         print(f"正在朗读第 {index + 1} 本书: \n书籍名称: {book['title']}\n书籍作者：{book['author']}\n"
               f"数量：{book['subTitle']}\n书籍内容：{book['content']}\n最短时间：{book['minTime']}\n")
         ret = hours.read_donate(project_id, book['bookId'], team_id, book['minTime'] + 10, audio_link)
-        if ret['code'] == 200 and ret['msg'] == 'success':
+        if ret['code'] == 200 and ret['msg'] in ['success', '']:
             print(f"\n朗读成功\n")
         else:
             print(f"\n朗读失败，错误信息: {ret}\n")
             if ret['code'] == 201:
-                continue # 朗读失败，跳过本次朗读
+                continue  # 朗读失败，跳过本次朗读
         print('----------------------------------')
         read_times += 1
     print('----------------------------------')
@@ -145,7 +145,8 @@ def main():
             input("按下回车键退出程序...")
             exit(0)
 
-        input('获取TOKEN失败请点击首页的"益起动" 微信授权后回车重试！\n等待回车后开始执行程序...\n')
+        input(
+            '获取TOKEN失败，请务必点击 "下方导航栏→《公益机会》→《益起动》" 微信授权后回车重试！\n等待回车后开始执行程序...\n')
         token, uuid = Memory.get_token_uuid_new()
 
     print("TOKEN: ", random_replace_star(token))

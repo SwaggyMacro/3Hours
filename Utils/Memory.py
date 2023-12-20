@@ -1,5 +1,4 @@
-import json
-
+import re
 import pymem
 import win32gui
 from pymem.exception import CouldNotOpenProcess
@@ -44,30 +43,23 @@ def get_token_uuid_new():
         uuid = None
         try:
             pm = pymem.Pymem(pid)
-            # bytes_pattern = r'&env=production#sid='.encode('utf-8')
-            bytes_pattern = r'requestHeaders'.encode('utf-8')
+            bytes_pattern = 'cwp.alibabafoundation.com/17lai'.encode('utf-8')
             character_count_address = pymem.pattern.pattern_scan_all(pm.process_handle, bytes_pattern,
                                                                      return_multiple=True)
-            # print(character_count_address)
             for address in character_count_address:
                 try:
                     text = pm.read_string(address, 600)
-                    text = text.replace(" ", '').replace('\\', '')[text.find('requestHeaders":"') +
-                                                                   17:text.find('","responseHeaders')]
-                    # find the last }" and remove the rest
-                    text = text[:text.rfind('}') + 1]
+                    uuid_pattern = re.compile(r'uuid=([a-fA-F0-9-]+)')
+                    sid_pattern = re.compile(r'sid=([a-fA-F0-9-]+)')
 
-                    # print(text)
+                    uuid_match = uuid_pattern.search(text)
+                    sid_match = sid_pattern.search(text)
 
-                    req_headers = json.loads(text)
+                    uuid = uuid_match.group(1) if uuid_match else None
+                    token = sid_match.group(1) if sid_match else None
 
-                    # print(req_headers)
-
-                    if "csr-uuid" in req_headers.keys() and "csr-token" in req_headers.keys():
-                        uuid = req_headers["csr-uuid"]
-                        token = req_headers["csr-token"]
+                    if uuid and token:
                         break
-
                 except:
                     continue
 
@@ -99,7 +91,6 @@ def get_token_uuid():
 
             character_count_address = pymem.pattern.pattern_scan_all(pm.process_handle, bytes_pattern,
                                                                      return_multiple=True)
-            # print(character_count_address)
             for address in character_count_address:
                 try:
                     token = pm.read_string(address, 80)
@@ -109,12 +100,9 @@ def get_token_uuid():
                 if token:
                     break
 
-            # print('----------------')
-
             bytes_pattern = 'i{"data"'.encode('utf-8')
             character_count_address = pymem.pattern.pattern_scan_all(pm.process_handle, bytes_pattern,
                                                                      return_multiple=True)
-            # print(character_count_address)
             try:
                 for address in character_count_address:
                     try:

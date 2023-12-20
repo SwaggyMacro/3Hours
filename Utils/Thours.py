@@ -142,7 +142,6 @@ class Thours:
                         verify=VERIFY_SSL, data=data).json()
 
     def get_today_charity_history_list(self):
-        # 本地获取今年是多少年
         now = datetime.datetime.now().year
         today = datetime.date.today()
         charity_date = today
@@ -170,18 +169,5 @@ class Thours:
                 else:
                     break
             page_index += 1
-
-        # if left_write == 10:
-        #     left_write = True
-        # else:
-        #     left_write = False
-        # if left_read == 5:
-        #     left_read = True
-        # else:
-        #     left_read = False
-        # if left_topic != 0:
-        #     left_topic = True
-        # else:
-        #     left_topic = False
 
         return history_list, left_write, left_read, left_topic

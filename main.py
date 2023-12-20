@@ -146,7 +146,7 @@ def main():
             exit(0)
 
         input(
-            '获取TOKEN失败，请务必点击 "下方导航栏→《公益机会》→《益起动》" 微信授权后回车重试！\n等待回车后开始执行程序...\n')
+            '获取TOKEN失败，请务必点击小程序中 "下方导航栏→《公益机会》→《益起动》(去捐步)" 微信授权后回车重试！\n等待回车后开始执行程序...\n')
         token, uuid = Memory.get_token_uuid_new()
 
     print("TOKEN: ", random_replace_star(token))
